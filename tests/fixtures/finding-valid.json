@@ -1,0 +1,13 @@
+{
+  "id": "find_fixture_attribute_01",
+  "version": 1,
+  "sourceId": "src_fixture_official_01",
+  "subject": "Fixture frame",
+  "findingType": "product",
+  "observedText": "Fixture observation only; not publishable evidence.",
+  "interpretation": "No interpretation is approved by this fixture.",
+  "observation": {"observedAt": "2026-09-20T08:05:00Z", "context": "Fixture record for schema tests."},
+  "status": "needs_review",
+  "confidence": 0.2,
+  "limitations": ["Fixture only", "Requires named human review"]
+}

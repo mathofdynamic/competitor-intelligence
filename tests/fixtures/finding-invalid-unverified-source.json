@@ -1,0 +1,12 @@
+{
+  "id": "find_fixture_unverified_01",
+  "version": 1,
+  "sourceId": "src_fixture_unverified",
+  "subject": "Unverified fixture",
+  "findingType": "price",
+  "observedText": "This finding must be rejected because its source is not verified.",
+  "observation": {"observedAt": "2026-09-20T08:05:00Z", "context": "Negative fixture."},
+  "status": "approved",
+  "confidence": 0.9,
+  "limitations": []
+}

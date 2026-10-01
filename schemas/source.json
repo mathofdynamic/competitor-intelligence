@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rbd.invalid/schemas/competitor/source.json",
+  "title": "Portable competitor research source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "company", "market", "url", "sourceType", "status", "discoveredAt", "observedAt", "collection", "rights"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^src_[a-z0-9][a-z0-9_-]{7,120}$"},
+    "company": {"type": "string", "minLength": 2, "maxLength": 160},
+    "market": {"type": "string", "minLength": 2, "maxLength": 120},
+    "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+    "sourceType": {"enum": ["official_storefront", "official_product_page", "regulatory", "retailer_public", "press_release", "marketplace", "social_public"]},
+    "status": {"enum": ["candidate", "unverified", "verified", "stale", "blocked", "rejected"]},
+    "discoveredAt": {"type": "string", "format": "date-time"},
+    "observedAt": {"type": "string", "format": "date-time"},
+    "collection": {"type": "object", "additionalProperties": false, "required": ["method", "robots", "terms", "rateLimit"], "properties": {
+      "method": {"enum": ["browser_public", "http_public", "manual_review"]},
+      "robots": {"enum": ["allowed", "disallowed", "unknown"]},
+      "terms": {"enum": ["reviewed_allowed", "reviewed_restricted", "not_reviewed", "unknown"]},
+      "rateLimit": {"type": "string", "minLength": 2, "maxLength": 200}
+    }},
+    "rights": {"type": "object", "additionalProperties": false, "required": ["retentionDays", "evidenceLocation"], "properties": {
+      "retentionDays": {"type": "integer", "minimum": 1, "maximum": 3650},
+      "evidenceLocation": {"enum": ["private_bounded_capture", "public_excerpt_manifest", "none"]}
+    }},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["sha256", "contentType", "storageRef"], "properties": {
+      "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+      "contentType": {"type": "string", "minLength": 3, "maxLength": 120},
+      "storageRef": {"type": "string", "minLength": 3, "maxLength": 240}
+    }}
+  }
+}

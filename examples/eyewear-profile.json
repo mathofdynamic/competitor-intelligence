@@ -1,0 +1,12 @@
+{
+  "company": "DIDAR",
+  "market": "Iran eyewear demonstration market",
+  "currency": "IRR",
+  "priceDateConvention": "Record the source's displayed price and observation date; do not convert without a declared rule.",
+  "categories": ["optical frames", "sunglasses", "lenses", "accessories"],
+  "researchGoals": ["identify candidate official sources", "compare publicly stated product attributes", "record price context when primary evidence is approved"],
+  "approvedCandidateSites": [],
+  "exclusions": ["private customer data", "login-only pages", "unapproved rankings", "market-share estimates"],
+  "reviewer": "owner-provided reviewer required",
+  "status": "input_only_no_research_claims"
+}

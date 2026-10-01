@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+_work/
+competitor-intelligence-package/
+*.zip
+.env
+.env.*

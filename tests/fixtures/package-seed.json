@@ -1,0 +1,10 @@
+{
+  "company_id": "example-optics",
+  "company_name": "Example Optics",
+  "competitor_id": "sample-optics",
+  "competitor_name": "Sample Optics",
+  "domain": "sample.example.com",
+  "price": 2500000,
+  "currency": "IRR",
+  "evidence_text": "Synthetic fixture: this sample frame is listed at IRR 2,500,000."
+}

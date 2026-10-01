@@ -1,0 +1,666 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CI Package v1 frontmatter",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "document_type",
+    "package_id",
+    "run_id",
+    "generated_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ci-package/v1"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "manifest",
+        "company",
+        "run",
+        "research_plan",
+        "discovery",
+        "competitor_directory",
+        "validation",
+        "competitor_profile",
+        "competitor_offerings",
+        "competitor_pricing",
+        "competitor_positioning",
+        "competitor_experience",
+        "competitor_digital",
+        "competitor_evidence",
+        "analysis",
+        "changelog",
+        "source",
+        "finding"
+      ]
+    },
+    "package_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "manifest": {
+      "type": "object",
+      "required": [
+        "company_id",
+        "company_name",
+        "created_at",
+        "research_started_at",
+        "research_finished_at",
+        "market_scope",
+        "competitor_count",
+        "source_count",
+        "finding_count",
+        "direct_competitor_count",
+        "package_status",
+        "generator",
+        "file_count",
+        "files"
+      ]
+    },
+    "company": {
+      "type": "object",
+      "required": [
+        "company_id",
+        "company_name",
+        "canonical_domain",
+        "description",
+        "industry",
+        "sub_industries",
+        "products_services",
+        "target_segments",
+        "geographies",
+        "languages",
+        "sales_channels",
+        "known_price_position",
+        "known_competitors",
+        "research_goals",
+        "inclusions",
+        "exclusions",
+        "unknowns",
+        "profile_provenance",
+        "finding_ids"
+      ]
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "research_mode",
+        "concurrency",
+        "budgets",
+        "extension_dimensions",
+        "conflict_groups",
+        "previous_package_id",
+        "limitations"
+      ],
+      "properties": {
+        "research_mode": {
+          "enum": [
+            "subagents",
+            "sequential"
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "budgets": {
+          "type": "object"
+        },
+        "extension_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conflict_groups": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "research_plan": {
+      "type": "object",
+      "required": [
+        "market_scope",
+        "criteria",
+        "discovery_strategy",
+        "search_vocabulary",
+        "dimensions",
+        "limitations"
+      ]
+    },
+    "discovery": {
+      "type": "object",
+      "required": [
+        "queries",
+        "identity_groups",
+        "exclusions",
+        "coverage",
+        "saturation"
+      ],
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "identity_groups": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "exclusions": {
+          "type": "array"
+        },
+        "coverage": {
+          "type": "object"
+        },
+        "saturation": {
+          "type": "object",
+          "required": [
+            "rule",
+            "zero_new_family_streak",
+            "saturation_reached",
+            "stop_reason"
+          ],
+          "properties": {
+            "saturation_reached": {
+              "type": "boolean"
+            },
+            "zero_new_family_streak": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "competitor_directory": {
+      "type": "object",
+      "required": [
+        "competitors",
+        "excluded_candidates"
+      ],
+      "properties": {
+        "competitors": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "excluded_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "domain",
+              "reason"
+            ]
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "result",
+        "checks",
+        "validator",
+        "hash_check"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "PASS",
+            "WARNING",
+            "FAIL"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "competitor_profile": {
+      "type": "object",
+      "required": [
+        "competitor_id",
+        "name",
+        "domain",
+        "classification",
+        "verification_status",
+        "geographies",
+        "primary_categories",
+        "reason_for_inclusion",
+        "dimensions",
+        "finding_ids",
+        "limitations"
+      ]
+    },
+    "dossier": {
+      "type": "object",
+      "required": [
+        "competitor_id",
+        "dimensions",
+        "finding_ids",
+        "source_ids",
+        "rows",
+        "limitations"
+      ],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cell"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "dimensions",
+        "finding_ids",
+        "rows",
+        "derived_metrics",
+        "hypotheses",
+        "limitations"
+      ],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cell"
+          }
+        },
+        "derived_metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/metric"
+          }
+        },
+        "hypotheses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hypothesis"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "required": [
+        "entity_id",
+        "dimension",
+        "field_key",
+        "value",
+        "unit",
+        "currency",
+        "status",
+        "finding_ids",
+        "context"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "observed",
+            "user_provided",
+            "unknown",
+            "conflict"
+          ]
+        },
+        "finding_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "required": [
+        "field_key",
+        "entity_id",
+        "value",
+        "unit",
+        "formula",
+        "inputs",
+        "limitations"
+      ],
+      "properties": {
+        "formula": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "hypothesis": {
+      "type": "object",
+      "required": [
+        "hypothesis_id",
+        "statement",
+        "finding_ids",
+        "assumptions",
+        "counter_evidence",
+        "limitations",
+        "suggested_validation"
+      ],
+      "properties": {
+        "finding_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "changelog": {
+      "type": "object",
+      "required": [
+        "previous_package_id",
+        "changes",
+        "limitations"
+      ],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "change_id",
+              "entity_id",
+              "dimension",
+              "field_key",
+              "change_type",
+              "previous_value",
+              "current_value",
+              "previous_finding_ids",
+              "current_finding_ids",
+              "interpretation",
+              "limitations"
+            ],
+            "properties": {
+              "change_type": {
+                "enum": [
+                  "new_competitor",
+                  "removed_or_inactive",
+                  "not_observed",
+                  "pricing",
+                  "offering",
+                  "positioning",
+                  "service_policy",
+                  "channel_feature"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "competitor_id",
+        "url",
+        "canonical_url",
+        "source_type",
+        "publisher",
+        "title",
+        "accessed_at",
+        "collection_method",
+        "robots_status",
+        "terms_status",
+        "content_sha256",
+        "evidence_text",
+        "status"
+      ]
+    },
+    "finding": {
+      "type": "object",
+      "required": [
+        "finding_id",
+        "competitor_id",
+        "dimension",
+        "field_key",
+        "observed_value",
+        "value_type",
+        "observed_at",
+        "source_ids",
+        "evidence_strength",
+        "review_status",
+        "notes"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "manifest"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/manifest"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "company"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/company"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "run"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/run"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "research_plan"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/research_plan"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "discovery"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/discovery"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "competitor_directory"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/competitor_directory"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "validation"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/validation"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "competitor_profile"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/competitor_profile"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "analysis"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/analysis"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "changelog"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/changelog"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "source"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "const": "finding"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document_type": {
+            "enum": [
+              "competitor_offerings",
+              "competitor_pricing",
+              "competitor_positioning",
+              "competitor_experience",
+              "competitor_digital",
+              "competitor_evidence"
+            ]
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/$defs/dossier"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "src_fixture_official_01",
+  "company": "Example eyewear brand",
+  "market": "fixture market",
+  "url": "https://example.com/fixture-eyewear",
+  "sourceType": "official_product_page",
+  "status": "verified",
+  "discoveredAt": "2026-09-20T08:00:00Z",
+  "observedAt": "2026-09-20T08:05:00Z",
+  "collection": {"method": "manual_review", "robots": "allowed", "terms": "reviewed_allowed", "rateLimit": "one bounded review"},
+  "rights": {"retentionDays": 30, "evidenceLocation": "public_excerpt_manifest"},
+  "evidence": {"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "contentType": "text/plain", "storageRef": "fixture://source-valid/excerpt-01"}
+}
