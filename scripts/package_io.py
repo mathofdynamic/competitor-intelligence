@@ -16,6 +16,13 @@ class UniqueLoader(yaml.SafeLoader):
     pass
 
 
+class PlainDataDumper(yaml.SafeDumper):
+    """Serialize ordinary frontmatter without YAML identity/alias semantics."""
+
+    def ignore_aliases(self, data):
+        return True
+
+
 def unique_mapping(loader, node, deep=False):
     result = {}
     for key_node, value_node in node.value:
@@ -59,7 +66,8 @@ def parse_document(raw: bytes):
 
 def write_document(path: Path, data: dict, body: str):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("---\n" + yaml.safe_dump(data, allow_unicode=True, sort_keys=False)
+    path.write_text("---\n" + yaml.dump(data, Dumper=PlainDataDumper,
+                                              allow_unicode=True, sort_keys=False)
                     + "---\n" + body, encoding="utf-8", newline="\n")
 
 

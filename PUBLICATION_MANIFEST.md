@@ -1,31 +1,11 @@
 # Publication manifest
 
-Status: owner-authorized public skill publication. Authorization covers the portable skill, documentation, tooling and synthetic fixtures only.
+Status: owner-authorized public repository. This repository contains the portable competitor-intelligence skill, documentation, schemas, offline tooling, illustrative examples and synthetic fixtures.
 
-Public destination: `https://github.com/mathofdynamic/competitor-intelligence`. No database change or real DIDAR research is authorized. For local installation copy this entire skill folder, including `references/*.md`, `schemas/*.json`, `schemas/currencies.txt`, `scripts/*.py`, `scripts/requirements.txt`, examples and synthetic tests. Exclude `__pycache__`, `_work`, captures, temporary files and generated ZIPs. No repository files outside this folder are runtime dependencies. No open-source license is granted by publication; a license can be added separately by the owner.
+Public destination: <https://github.com/mathofdynamic/competitor-intelligence>.
 
-New canonical research output is CI Package v1 Markdown. Existing JSON schemas/fixtures remain unchanged as legacy adapter compatibility artifacts. The lists below are historical publication candidates, not approval to publish V2 or real research.
+Copy the complete skill directory for local installation: `SKILL.md`, `PUBLICATION_MANIFEST.md`, `references/`, `schemas/`, `scripts/`, `examples/` and `tests/`. Python and PyYAML are the only runtime requirements. No file outside this skill folder is required. Exclude `__pycache__`, `_work/`, browser profiles, temporary downloads, research captures, real competitor packages, private screenshots, credentials and generated ZIPs.
 
-## Approved for a future public package, after owner review
+CI Package v1 remains supported. The new depth-oriented output contract is the additive `ci-package/v1.1` minor version. The source and finding schemas under `schemas/*.json` are retained legacy adapter compatibility artifacts. No DIDAR database adapter, application schema, workspace identifier, route contract or customer data is included.
 
-- `SKILL.md`
-- `references/source-policy.md`
-- `references/evidence-schema.md`
-- `references/review-workflow.md`
-- `references/report-format.md`
-- `schemas/source.json`
-- `schemas/finding.json`
-- `schemas/report.json`
-- `examples/eyewear-profile.json`
-- `tests/validate_fixtures.py`
-- `tests/fixtures/*`
-
-## Private and excluded by default
-
-- DIDAR database adapters, workspace identifiers and route contracts
-- VPS paths, credentials, cookies, API tokens and owner account details
-- screenshots containing customer records
-- Hazar or LUMA data, competitor rows and research captures
-- any unapproved source list, finding or report
-
-The owner's explicit publication request supersedes the earlier private-only distribution boundary. Public artifacts contain skill instructions and synthetic fixtures, not real research captures or application data. Public-source policy and bounded evidence rules remain unchanged. Future real research or database work requires its own task authorization.
+This public repository does not contain the results of any live DIDAR run. Public-source research must stay in a separate user-selected output directory unless publication is explicitly requested. This publication authorization does not authorize an application, database or deployment write. No open-source license is granted by repository visibility; the owner may add a license separately.

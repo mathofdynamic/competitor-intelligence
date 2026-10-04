@@ -1,23 +1,46 @@
 # Comparable dimensions
 
-Use identical field keys and units across company and competitors. Null is unknown, never false or zero. Unobserved features are not absent; explicit support is needed for absence. Define extensions in `RUN.md.extension_dimensions`, preferably industry_<name>.
+Use the same field names, units and evidence rules for the focal company and competitors. Package v1.1 defines 12 standard dimensions. Every competitor gets one explicit state per dimension. Keep values and their finding references in frontmatter; prose is context, not an analytics source.
 
-| Dimension | Fields to consider |
+| Dimension | Research targets |
 | --- | --- |
-| identity | brand_name, canonical_domain, geographies, company_type, stated_target_customer |
-| offering | category, product_line, variant, capability, offering_breadth |
-| pricing | visible_price, tier_price, price_range_min/max, billing_period, free_trial, free_tier, installment_terms |
-| positioning | headline_claim, value_proposition, claimed_differentiator, audience_language, claimed_price_position |
-| experience | shipping_terms, delivery_time, return_terms, warranty_terms, support_channel, consultation, booking, customization |
-| channels | ecommerce, physical_store, marketplace, b2b, app, other_channel |
-| digital | website_section, resource_type, public_social_url, public_app_url, conversion_mechanism |
-| trust | guarantee, stated_certification, company_published_testimonial, company_published_review |
-| promotions | discount_mechanism, bundle, loyalty, referral, seasonal_campaign |
+| identity | brand/company name, canonical domain, company type, stated target customer |
+| description | factual 1-3 sentence description, business model, primary offering and sales model |
+| geography | city/region, stated market scope, languages, online/physical/omnichannel scope, branch evidence |
+| offering | product/service categories, major lines, options, capabilities and breadth |
+| pricing | item/service prices, sampled category ranges, currency, unit, price type, discounts, installments, free-shipping threshold |
+| positioning | observed claims and evidence-backed normalized themes |
+| customer_experience | shipping, delivery, returns, exchange, warranty, support, consultation, fitting, tracking, after-sales, appointment |
+| sales_channels | ecommerce, physical_store, instagram_social, marketplace, phone, messaging, b2b, online_appointment, in_person |
+| digital_presence | ecommerce, mobile_app, virtual_try_on, prescription_upload, online_consultation, online_booking, blog_content, guides, product_filters, online_support, social_presence |
+| trust | warranty, return_policy, guarantee, professional_credentials, certifications, physical_presence, review_mechanism, expert_claim, optometry_presence |
+| promotions | percentage_discount, fixed_discount, coupon, bundle, loyalty, referral, free_shipping, installments, seasonal_campaign |
+| physical_presence | observed locations, branches and cities; state `observed` or `unknown`, never infer national coverage from one store |
 
-Company-published testimonials are not independent satisfaction evidence. Certifications remain stated claims until verified. Observe conversion availability without forms, uploads, bookings or support contact.
+## Dimension states
 
-Relevant eyewear extensions: prescription, sunglasses, blue-light, children, lenses/options, frame materials, virtual try-on, face-shape guidance, prescription-upload availability, gender positioning, physical fitting and optical services. Never submit medical/customer information. Other industries choose publicly observable extensions.
+- `SUPPORTED`: credible finding(s) support the dimension.
+- `PARTIAL`: useful evidence exists, with a stated limitation.
+- `SEARCHED_UNKNOWN`: targeted searches were logged, but no reliable finding was established.
+- `NOT_RESEARCHED`: no meaningful attempt was made; document why.
+- `RESTRICTED`: source/access restrictions prevented meaningful research; cite the restriction record and reason.
 
-Money retains original text, currency, tax/shipping context, variant, availability and period. Explicit toman prices normalize to IRR by multiplying by 10 with a recorded rule; ambiguous currency remains unknown. Currency conversion needs a dated public rate source and formula. Compare separate currencies otherwise. Ranges describe observed samples, not entire catalogs.
+Do not treat a blank as an outcome. A source restriction does not invalidate the competitor; seek other permitted sources. An attempt can end `SEARCHED_UNKNOWN`. Never mark a capability absent unless an explicit, scoped observation supports absence.
 
-Derived metrics document field_key, entity_id, value, unit, formula, inputs (finding IDs), limitations. Examples: distinct observed category/channel/service/promotion counts; supported dimensions / planned applicable dimensions. Explain denominators and sampled pages. Relative price indexes require matched basket, currency/unit/period and missing-item rule. No overall score/winner or site-derived market share.
+## Eyewear taxonomy
+
+Products may use: `prescription_frames`, `sunglasses`, `optical_frames`, `blue_light_glasses`, `contact_lenses`, `optical_lenses`, `children_eyewear`, `sports_eyewear`, `reading_glasses`, `accessories`.
+
+Services may use: `eye_exam`, `optometry`, `prescription_service`, `prescription_upload`, `frame_fitting`, `lens_fitting`, `repair`, `customization`, `consultation`, `virtual_try_on`.
+
+Record only supported items. Each product, service, theme, channel, digital capability, trust signal and experience capability is a structured entry with finding IDs. Do not encode unobserved items as `false`.
+
+Positioning themes: `affordability`, `premium`, `fashion_design`, `medical_expertise`, `quality`, `variety`, `convenience`, `speed`, `customization`, `digital_convenience`, `physical_expertise`, `family`, `children`, `professional_optics`. Treat these as labels for observed company claims, not analyst-assigned personalities.
+
+## Prices and derived measures
+
+Each price observation preserves the displayed denomination and includes category, item/service, amount or amount_min/amount_max, currency, unit, price type, promotion state, observation time, source IDs and linked finding IDs. Ranges require separate scalar money findings for each endpoint. Do not convert currencies silently: for Iranian prices displayed in toman, preserve the numeric toman value with `currency: IRR` and `unit: toman`; never multiply by ten. A price summary is grouped by category, currency and unit. With ranges, minimum is the lowest lower bound, maximum the highest upper bound, median is the median of each item's midpoint, and count is the number of distinct item/service observations. Include every input finding ID, exact formula and sampling limitations. No price observation means unknown, not zero. Relative price indexes require a matched basket, currency, unit, period and an explicit missing-item rule.
+
+Coverage percentage is `(SUPPORTED + PARTIAL) / applicable_dimensions * 100`. Research-attempt percentage is `(all states except NOT_RESEARCHED) / applicable_dimensions * 100`. Publish exact state counts too. These measures describe evidence coverage, not competitor quality or market completeness.
+
+Derived breadth counts and similarity inputs must name their formula, inputs and limitations. Similarity may use only transparently defined category, channel, service or price-position overlap. Never produce an opaque overall competitor score, winner, site-derived market share, traffic estimate or revenue estimate.

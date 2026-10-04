@@ -1,6 +1,6 @@
 # Illustrative company input
 
-This is a fictional brief, not permission to research DIDAR or assert facts about example.com.
+This is a fictional brief, not permission to assert facts about example.com.
 
 ```text
 Use $competitor-intelligence.

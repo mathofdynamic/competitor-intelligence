@@ -8,7 +8,9 @@ Give your coding agent a company brief. The skill orchestrates scoped discovery,
 
 - A normalized company profile with user-provided, observed, inferred, and unknown information distinguished.
 - A discovery log with query families, identity deduplication, exclusions, coverage, and saturation assessment.
-- Competitor dossiers covering offerings, pricing, positioning, customer experience, channels, and public digital presence.
+- Twelve-dimension competitor dossiers covering identity, description, geography, offerings, prices, positioning, customer experience, sales and digital channels, trust, promotions, and physical presence.
+- Explicit per-dimension states: `SUPPORTED`, `PARTIAL`, `SEARCHED_UNKNOWN`, `NOT_RESEARCHED`, or `RESTRICTED`.
+- Structured price observations, normalized eyewear categories and capabilities, coverage metrics, and evidence-backed opportunity/risk hypotheses.
 - Atomic findings linked to dated, bounded source evidence.
 - Cross-competitor matrices, market analysis, opportunity hypotheses, and visible conflicts and unknowns.
 - An optional manifest-validated ZIP suitable for downstream review ingestion.
@@ -60,19 +62,19 @@ This brief is illustrative; it asserts no real competitor facts. See [the comple
 
 ## Research workflow
 
-1. Normalize company understanding and define market scope.
-2. Write a research plan before deep collection.
-3. Discover candidates through independent query families; resolve aliases and parent/brand relationships.
-4. Classify direct, indirect, substitute, reference, and excluded identities with reasons.
-5. Research one competitor per worker, up to four concurrent researchers within available capacity; batch or fall back to sequential research.
-6. Have the main agent verify claims, reconcile currencies and terminology, preserve contradictions, and synthesize comparable analysis.
-7. Seal, validate, and optionally ZIP the package.
+1. Normalize company understanding, market scope, and unknowns; write the research plan.
+2. When a prior package exists, validate it, keep stable IDs, and identify stale or shallow dimensions.
+3. Deepen existing direct competitors before expanding discovery on recovery runs; otherwise discover broadly through independent query families.
+4. Deliberately attempt all 12 standard dimensions for every direct competitor, using multiple relevant source types and alternative permitted sources where needed.
+5. Delegate one competitor per researcher, up to four concurrent workers within available capacity; batch large sets or fall back to sequential research.
+6. Have the main agent verify identities, source links, claims, currencies, and terminology; reconcile contradictions and synthesize comparable analysis.
+7. Seal, validate, review warnings, and optionally ZIP the package.
 
 Discovery saturation requires three consecutive independent relevant query families producing no credible new identities after initial broad coverage. Budget or access stops are reported separately. Saturation is a practical coverage heuristic, not proof of global completeness.
 
-## CI Package v1
+## CI Package v1.1
 
-Canonical records are Markdown with machine-readable YAML frontmatter. Structured chart values belong in frontmatter; prose supplies explanations.
+New packages use the backward-compatible additive minor contract `ci-package/v1.1`. Existing v1 packages remain supported. Canonical records are Markdown with machine-readable YAML frontmatter; structured chart values belong in frontmatter, and prose supplies explanations.
 
 ```text
 competitor-intelligence-package/
@@ -109,7 +111,9 @@ competitor-intelligence-package/
 
 Every finding is atomic, dated, linked to sources, and marked `needs_review`. Evidence strength describes support quality, not company quality. Unknowns remain unknown; contradictions remain visible. The focal company uses the same comparable dimensions.
 
-See the [complete package contract](references/package-contract-v1.md), [evidence model](references/evidence-schema.md), and [research dimensions](references/dimensions.md). Existing JSON schemas are retained legacy adapter contracts; new research output uses Package v1.
+Each competitor dimension has a coverage state and source/query/finding references. `SEARCHED_UNKNOWN` means targeted searches found no reliable claim; `NOT_RESEARCHED` means no meaningful attempt; `RESTRICTED` records the access barrier. The validator checks direct-dossier gaps, structured prices, controlled capability values, source diversity, evidence references, previous-run mappings and manifest hashes. Coverage percentage measures evidence coverage, never competitor quality.
+
+See the [v1.1 package contract](references/package-contract-v1.1.md), [v1 compatibility contract](references/package-contract-v1.md), [evidence model](references/evidence-schema.md), and [research dimensions](references/dimensions.md). Existing JSON schemas are retained legacy adapter contracts.
 
 ## Validate and package
 
@@ -150,7 +154,7 @@ python tests/validate_fixtures.py
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
-The suite contains 35 offline package tests, including invalid findings, missing sources, duplicate IDs, bad URLs, malicious paths, broken hashes, unsupported versions, conflicts, change tracking, copied-skill execution, and ZIP round trips. Fixtures are synthetic. Tests do not establish live research quality or application integration.
+The suite contains offline v1 and v1.1 package tests, including coverage states, multi-source attempts, price normalization/summaries, capability taxonomies, optional branding, opportunity/risk evidence, previous-run identity matching, conflicts, malicious paths, copied-skill execution, and ZIP round trips. Fixtures are synthetic. Tests do not establish live research quality or application integration.
 
 ## Repository layout
 

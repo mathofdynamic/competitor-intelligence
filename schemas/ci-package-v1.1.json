@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "CI Package v1 frontmatter",
+  "title": "CI Package v1.1 frontmatter",
   "type": "object",
   "required": [
     "schema_version",
@@ -11,7 +11,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "ci-package/v1"
+      "const": "ci-package/v1.1"
     },
     "document_type": {
       "type": "string",
@@ -455,8 +455,9 @@
                   "pricing",
                   "offering",
                   "positioning",
-                  "service_policy",
-                  "channel_feature"
+              "service_policy",
+              "channel_feature",
+              "newly_observed"
                 ]
               }
             }

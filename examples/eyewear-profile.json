@@ -1,6 +1,6 @@
 {
-  "company": "DIDAR",
-  "market": "Iran eyewear demonstration market",
+  "company": "Example Optics",
+  "market": "Iran eyewear retail example",
   "currency": "IRR",
   "priceDateConvention": "Record the source's displayed price and observation date; do not convert without a declared rule.",
   "categories": ["optical frames", "sunglasses", "lenses", "accessories"],

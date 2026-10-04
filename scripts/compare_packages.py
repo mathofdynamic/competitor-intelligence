@@ -24,7 +24,9 @@ def compare(previous: Path, current: Path):
         groups = {}
         for d in records.values():
             if d["document_type"] == "finding":
-                key = (d["competitor_id"], d["dimension"], d["field_key"],
+                dimension = {"experience": "customer_experience", "channels": "sales_channels",
+                             "digital": "digital_presence"}.get(d["dimension"], d["dimension"])
+                key = (d["competitor_id"], dimension, d["field_key"],
                        json.dumps(d.get("context", {}), sort_keys=True, ensure_ascii=False))
                 groups.setdefault(key, []).append(d)
         return groups
@@ -44,8 +46,20 @@ def compare(previous: Path, current: Path):
         entity, dimension, field, _ = key
         kind = {"pricing": "pricing", "offering": "offering", "positioning": "positioning",
                 "experience": "service_policy", "channels": "channel_feature", "digital": "channel_feature"}.get(dimension, "not_observed")
-        if not b:
+        if not a and b and new["MANIFEST.md"].get("schema_version") == "ci-package/v1.1":
+            kind = "newly_observed"
+        elif not b:
             kind = "not_observed"
+        if a and b and new["MANIFEST.md"].get("schema_version") == "ci-package/v1.1":
+            old_coverage = old["COMPETITORS.md"].get("competitors", [])
+            new_coverage = new["COMPETITORS.md"].get("competitors", [])
+            old_entry = next((c for c in old_coverage if c.get("id") == entity), None)
+            new_entry = next((c for c in new_coverage if c.get("id") == entity), None)
+            if old_entry and new_entry:
+                old_state = old_entry.get("dimension_coverage", {}).get(dimension, {}).get("state")
+                new_state = new_entry.get("dimension_coverage", {}).get(dimension, {}).get("state")
+                if old_state in {"SEARCHED_UNKNOWN", "NOT_RESEARCHED", "RESTRICTED"} and new_state in {"SUPPORTED", "PARTIAL"}:
+                    kind = "newly_observed"
         changes.append({"change_id": f"change-{len(changes) + 1:04d}", "entity_id": entity,
                         "dimension": dimension, "field_key": field, "change_type": kind,
                         "previous_value": values(a), "current_value": values(b),
@@ -68,6 +82,22 @@ def compare(previous: Path, current: Path):
     return data
 
 
+def stable_identity_matches(previous_records, current_records):
+    """Preserve IDs only for exact stable-ID/name/domain matches; review ambiguous cases manually."""
+    old = {c["id"]: c for c in previous_records["COMPETITORS.md"].get("competitors", [])}
+    new = {c["id"]: c for c in current_records["COMPETITORS.md"].get("competitors", [])}
+    matches = []
+    for cid in sorted(old.keys() & new.keys()):
+        before, after = old[cid], new[cid]
+        same_name = str(before.get("name", "")).strip().casefold() == str(after.get("name", "")).strip().casefold()
+        same_domain = str(before.get("domain", "")).strip().lower() == str(after.get("domain", "")).strip().lower()
+        if same_name or same_domain:
+            matches.append({"previous_id": cid, "current_id": cid,
+                            "match_basis": "stable ID with matching normalized name or domain; aliases still require review",
+                            "confidence": "medium" if same_name and same_domain else "weak"})
+    return matches
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("previous", type=Path)
@@ -75,10 +105,17 @@ def main():
     args = parser.parse_args()
     try:
         data = compare(args.previous, args.current)
+        matches = []
+        if data.get("schema_version") == "ci-package/v1.1":
+            _, old_records = validate(args.previous)
+            _, current_records = validate(args.current)
+            matches = stable_identity_matches(old_records, current_records)
         write_document(args.current / "analysis/CHANGELOG.md", data,
                        "# Changes\n\nSnapshot differences require main-agent review. Missing observations do not prove inactivity.\n")
         run, body = read_document(args.current / "RUN.md")
         run["previous_package_id"] = data["previous_package_id"]
+        if data.get("schema_version") == "ci-package/v1.1":
+            run["previous_competitor_matches"] = matches
         write_document(args.current / "RUN.md", run, body)
         print("Changelog written. Review, then seal and validate the current package again.")
     except Exception as exc:
